@@ -181,7 +181,19 @@ def my_grievances():
 def dashboard():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM grievances ORDER BY created_at DESC")
+    cur.execute("""
+    SELECT
+        id,
+        title,
+        description,
+        mood,
+        priority,
+        response,
+        status
+    FROM grievances
+    ORDER BY created_at DESC
+""")
+
     data = cur.fetchall()
     cur.close()
     conn.close()
