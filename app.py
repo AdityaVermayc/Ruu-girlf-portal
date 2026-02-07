@@ -1,3 +1,5 @@
+ENV = os.environ.get("ENV", "development")
+
 from flask import Flask, render_template, request, redirect, session, url_for, flash
 from flask_mail import Mail, Message
 import psycopg2
@@ -149,7 +151,11 @@ def submit():
         <p><strong>Description:</strong><br>{desc}</p>
         """
 
-        mail.send(msg)
+        if os.environ.get("ENV") != "production":
+    mail.send(msg)
+else:
+    print("Skipping email send in production")
+
 
         flash(f"Grievance submitted! {ADMIN_NAME} has been notified 💌")
         return redirect(url_for('thank_you'))
