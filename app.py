@@ -1,9 +1,9 @@
+import os
 ENV = os.environ.get("ENV", "development")
 
 from flask import Flask, render_template, request, redirect, session, url_for, flash
 from flask_mail import Mail, Message
 import psycopg2
-import os
 from functools import wraps
 
 app = Flask(__name__)
@@ -151,11 +151,11 @@ def submit():
         <p><strong>Description:</strong><br>{desc}</p>
         """
 
-        if os.environ.get("ENV") != "production":
-    mail.send(msg)
-else:
-    print("Skipping email send in production")
-
+        if ENV == "development":
+           mail.send(msg)
+        else:
+           print("Skipping email send in production")
+ 
 
         flash(f"Grievance submitted! {ADMIN_NAME} has been notified 💌")
         return redirect(url_for('thank_you'))
@@ -255,7 +255,8 @@ def resolve(gid):
 # =======================
 # App start
 # =======================
-init_db()  # <-- THIS is the fix
-
-if __name__ == '__main__':
+if __name__ == "__main__":
+    if ENV == "production":
+        init_db()   # only Railway
     app.run(debug=True)
+
