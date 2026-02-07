@@ -207,6 +207,24 @@ def dashboard():
     conn.close()
     return render_template("dashboard.html", grievances=data)
 
+@app.route("/respond/<int:gid>", methods=["POST"])
+@login_required(ADMIN_NAME)
+def respond(gid):
+    response_text = request.form.get("response", "").strip()
+    
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(
+        "UPDATE grievances SET response=%s WHERE id=%s",
+        (response_text, gid)
+    )
+    conn.commit()
+    cur.close()
+    conn.close()
+    
+    flash("Response submitted!")
+    return redirect(url_for("dashboard"))
+
 @app.route("/resolve/<int:gid>")
 @login_required(ADMIN_NAME)
 def resolve(gid):
@@ -228,4 +246,3 @@ if __name__ == "__main__":
     if ENV == "production":
         init_db()
     app.run(debug=True)
-

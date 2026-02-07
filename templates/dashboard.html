@@ -45,11 +45,15 @@
                 <!-- RESPONSE -->
                 <p>
                     <strong>Response:</strong>
-                    {{ grievance[5] or 'None yet' }}
+                    {% if grievance[5] and grievance[5].strip() %}
+                        {{ grievance[5] }}
+                    {% else %}
+                        None yet
+                    {% endif %}
                 </p>
 
                 <!-- RESPONSE FORM -->
-                {% if not grievance[5] %}
+                {% if not (grievance[5] and grievance[5].strip()) %}
                 <form method="POST" action="{{ url_for('respond', gid=grievance[0]) }}">
                     <textarea
                         name="response"
@@ -66,14 +70,16 @@
                 <!-- RESOLVE BUTTON -->
                 {% if grievance[6] == 'Resolved' %}
                     <button
-                        style="background-color:#28a745; color:white;"
+                        style="background-color:#28a745; color:white; cursor:not-allowed;"
                         disabled
                     >
-                        Resolved
+                        ✅ Resolved
                     </button>
                 {% else %}
                     <a href="{{ url_for('resolve', gid=grievance[0]) }}">
-                        <button>Resolve</button>
+                        <button style="background-color:#dc3545; color:white;">
+                            Mark as Resolved
+                        </button>
                     </a>
                 {% endif %}
 
@@ -87,4 +93,3 @@
 </div>
 </body>
 </html>
-

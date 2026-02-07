@@ -105,7 +105,11 @@
 
             <!-- response -->
             <td>
-                {{ grievance[5] if grievance[5] else "Pending" }}
+                {% if grievance[5] and grievance[5].strip() %}
+                    {{ grievance[5] }}
+                {% else %}
+                    <em style="color: #999;">No response yet</em>
+                {% endif %}
             </td>
 
             <!-- ✅ STATUS (ONLY from status column) -->
@@ -132,4 +136,3 @@
 
 </body>
 </html>
-
