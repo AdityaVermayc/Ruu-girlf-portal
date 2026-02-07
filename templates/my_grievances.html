@@ -90,20 +90,26 @@
                         <th>Status</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for grievance in grievances %}
-                    <tr>
-                        <td>{{ grievance[0] }}</td>
-                        <td>{{ grievance[1] }}</td>
-                        <td>{{ grievance[2] }}</td>
-                        <td>{{ grievance[3] }}</td>
-                        <td>{{ grievance[4] if grievance[4] else "Pending" }}</td>
-                        <td class="{{ 'resolved' if grievance[5] else 'unresolved' }}">
-                            {{ 'Resolved' if grievance[5] else 'Pending' }}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
+               <tbody>
+                  {% for grievance in grievances %}
+                  <tr>
+                     <td>{{ grievance[1] }}</td>
+                     <td>{{ grievance[2] }}</td>
+                     <td>{{ grievance[3] }}</td>
+                     <td>{{ grievance[4] }}</td>
+
+                     <!-- RESPONSE -->
+                     <td>{{ grievance[5] or "Pending" }}</td>
+
+                     <!-- STATUS (FIXED) -->
+                     <td class="{{ 'resolved' if grievance[6] == 'Resolved' else 'unresolved' }}">
+                       {{ grievance[6] }}
+                     </td>
+                  </tr>
+                   {% endfor %}
+               </tbody>
+
+                   
             </table>
         {% else %}
             <p style="text-align: center; color: gray;">No grievances found 💭</p>
