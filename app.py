@@ -164,10 +164,18 @@ def my_grievances():
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute("""
-        SELECT title, description, mood, priority, response, status
-        FROM grievances
-        ORDER BY created_at DESC
-    """)
+    SELECT
+        id,
+        title,
+        description,
+        mood,
+        priority,
+        response,
+        status
+    FROM grievances
+    ORDER BY created_at DESC
+""")
+
     data = cur.fetchall()
     cur.close()
     conn.close()
