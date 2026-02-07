@@ -6,43 +6,85 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
+
 <body>
-    <div class="dashboard-container">
-        <div class="dashboard-box">
-            <h2>Grievances Dashboard</h2>
-            <div class="grievance-list">
-                {% for grievance in grievances %}
-                    <div class="grievance-item">
-                        <h3>{{ grievance[1] }}</h3>
-                        <p><strong>Description:</strong> {{ grievance[2] }}</p>
-                        <p><strong>Mood:</strong> {{ grievance[3] }}</p>
-                        <p><strong>Priority:</strong> {{ grievance[4] }}</p>
-                        <p><strong>Status:</strong> {% if grievance[5] == 1 %} ✅ Resolved {% else %} ❌ Pending {% endif %}</p>
-                        <p><strong>Response:</strong> {{ grievance[4] or 'None yet' }}</p>
-            
-                        {% if not grievance[6] %}
-                            <form method="POST" action="{{ url_for('respond', gid=grievance[0]) }}">
-                                <textarea name="response" placeholder="Type your response here..." rows="3" required></textarea>
-                                <button type="submit">Submit Response</button>
-                            </form>
-                        {% else %}
-                            <p style="color: green;"><strong>✅ You have already responded.</strong></p>
-                        {% endif %}
-            
-                        {% if grievance[5] == 1 %}
-                            <button style="background-color: #28a745; color: white;" disabled>Resolved</button>
-                        {% else %}
-                            <a href="{{ url_for('resolve', gid=grievance[0]) }}">
-                                <button>Resolve</button>
-                            </a>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>            
-            <a href="{{ url_for('dashboard') }}" class="btn">Refresh</a>
+<div class="dashboard-container">
+    <div class="dashboard-box">
+        <h2>Grievances Dashboard</h2>
+
+        <div class="grievance-list">
+            {% for grievance in grievances %}
+            <div class="grievance-item">
+
+                <!-- grievance indexes (IMPORTANT)
+                0 id
+                1 title
+                2 description
+                3 mood
+                4 priority
+                5 response
+                6 status
+                -->
+
+                <h3>{{ grievance[1] }}</h3>
+
+                <p><strong>Description:</strong> {{ grievance[2] }}</p>
+                <p><strong>Mood:</strong> {{ grievance[3] }}</p>
+                <p><strong>Priority:</strong> {{ grievance[4] }}</p>
+
+                <!-- STATUS -->
+                <p>
+                    <strong>Status:</strong>
+                    {% if grievance[6] == 'Resolved' %}
+                        ✅ Resolved
+                    {% else %}
+                        ❌ Pending
+                    {% endif %}
+                </p>
+
+                <!-- RESPONSE -->
+                <p>
+                    <strong>Response:</strong>
+                    {{ grievance[5] or 'None yet' }}
+                </p>
+
+                <!-- RESPONSE FORM -->
+                {% if not grievance[5] %}
+                <form method="POST" action="{{ url_for('respond', gid=grievance[0]) }}">
+                    <textarea
+                        name="response"
+                        placeholder="Type your response here..."
+                        rows="3"
+                        required
+                    ></textarea>
+                    <button type="submit">Submit Response</button>
+                </form>
+                {% else %}
+                    <p style="color: green;"><strong>✅ You have already responded.</strong></p>
+                {% endif %}
+
+                <!-- RESOLVE BUTTON -->
+                {% if grievance[6] == 'Resolved' %}
+                    <button
+                        style="background-color:#28a745; color:white;"
+                        disabled
+                    >
+                        Resolved
+                    </button>
+                {% else %}
+                    <a href="{{ url_for('resolve', gid=grievance[0]) }}">
+                        <button>Resolve</button>
+                    </a>
+                {% endif %}
 
             </div>
+            {% endfor %}
         </div>
+
+        <a href="{{ url_for('dashboard') }}" class="btn">Refresh</a>
+
     </div>
+</div>
 </body>
 </html>
+
