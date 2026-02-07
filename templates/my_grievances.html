@@ -1,5 +1,3 @@
-<!-- DEPLOY TEST v2 -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +5,7 @@
     <title>My Grievances</title>
     <link rel="stylesheet" href="/static/css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         body {
             background: linear-gradient(to right, #ffe0ec, #f7f7f7);
@@ -69,64 +68,63 @@
             color: red;
             font-weight: bold;
         }
-
-        @media screen and (max-width: 600px) {
-            table {
-                font-size: 0.85em;
-            }
-        }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <h2>Your Grievances 😿</h2>
-        {% if grievances %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Mood</th>
-                        <th>Priority</th>
-                        <th>Response</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-              <tbody>
-{% for grievance in grievances %}
-<tr>
-    <!-- title -->
-    <td>{{ grievance[1] }}</td>
+<div class="container">
+    <h2>Your Grievances 😿</h2>
 
-    <!-- description -->
-    <td>{{ grievance[2] }}</td>
+    {% if grievances %}
+    <table>
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Mood</th>
+            <th>Priority</th>
+            <th>Response</th>
+            <th>Status</th>
+        </tr>
+        </thead>
 
-    <!-- mood -->
-    <td>{{ grievance[3] }}</td>
+        <tbody>
+        {% for grievance in grievances %}
+        <tr>
+            <!-- title -->
+            <td>{{ grievance[1] }}</td>
 
-    <!-- priority -->
-    <td>{{ grievance[4] }}</td>
+            <!-- description -->
+            <td>{{ grievance[2] }}</td>
 
-    <!-- response -->
-    <td>{{ grievance[5] if grievance[5] else "Pending" }}</td>
+            <!-- mood -->
+            <td>{{ grievance[3] }}</td>
 
-    <!-- ✅ STATUS (THIS IS THE FIX) -->
-    <td class="{{ 'resolved' if grievance[6] == 'Resolved' else 'unresolved' }}">
-        {{ grievance[6] }}
-    </td>
-</tr>
-{% endfor %}
-                </tbody>
+            <!-- priority -->
+            <td>{{ grievance[4] }}</td>
 
+            <!-- response -->
+            <td>
+                {{ grievance[5] if grievance[5] else "Pending" }}
+            </td>
 
-                   
-            </table>
-        {% else %}
-            <p style="text-align: center; color: gray;">No grievances found 💭</p>
-        {% endif %}
-    </div>
-    <div style="text-align: center; margin-top: 20px;">
-        <a href="/submit" class="btn">Submit New Grievance</a>
-    </div>    
+            <!-- ✅ STATUS (ONLY from status column) -->
+            <td class="{{ 'resolved' if grievance[6] == 'Resolved' else 'unresolved' }}">
+                {{ grievance[6] }}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p style="text-align:center; color:gray;">No grievances found 💭</p>
+    {% endif %}
+</div>
+
+<div style="text-align:center; margin-top:20px;">
+    <a href="/submit" class="btn">Submit New Grievance</a>
+</div>
+
 </body>
 </html>
+
