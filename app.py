@@ -239,6 +239,42 @@ def resolve(gid):
     conn.close()
     return redirect(url_for("dashboard"))
 
+@app.route("/debug_data")
+def debug_data():
+    """Debug route to see raw database data"""
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("""
+    SELECT
+        id,
+        title,
+        description,
+        mood,
+        priority,
+        response,
+        status
+    FROM grievances
+    ORDER BY created_at DESC
+    LIMIT 5
+    """)
+    
+    data = cur.fetchall()
+    cur.close()
+    conn.close()
+    
+    # Format as readable text
+    output = "<pre>"
+    output += "Index: [0=id, 1=title, 2=desc, 3=mood, 4=priority, 5=response, 6=status]\n\n"
+    for row in data:
+        output += f"Row: {row}\n"
+        output += f"  ID: {row[0]}\n"
+        output += f"  Title: {row[1]}\n"
+        output += f"  Response: {row[5]}\n"
+        output += f"  Status: {row[6]}\n\n"
+    output += "</pre>"
+    
+    return output
+
 # ======================
 # App start
 # ======================
