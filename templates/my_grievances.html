@@ -92,24 +92,32 @@
                         <th>Status</th>
                     </tr>
                 </thead>
-               <tbody>
-                  {% for grievance in grievances %}
-                  <tr>
-                     <td>{{ grievance[1] }}</td>
-                     <td>{{ grievance[2] }}</td>
-                     <td>{{ grievance[3] }}</td>
-                     <td>{{ grievance[4] }}</td>
+              <tbody>
+{% for grievance in grievances %}
+<tr>
+    <!-- title -->
+    <td>{{ grievance[1] }}</td>
 
-                     <!-- RESPONSE -->
-                     <td>{{ grievance[5] or "Pending" }}</td>
+    <!-- description -->
+    <td>{{ grievance[2] }}</td>
 
-                     <!-- STATUS (FIXED) -->
-                     <td class="{{ 'resolved' if grievance[6] == 'Resolved' else 'unresolved' }}">
-                       {{ grievance[6] }}
-                     </td>
-                  </tr>
-                   {% endfor %}
-               </tbody>
+    <!-- mood -->
+    <td>{{ grievance[3] }}</td>
+
+    <!-- priority -->
+    <td>{{ grievance[4] }}</td>
+
+    <!-- response -->
+    <td>{{ grievance[5] if grievance[5] else "Pending" }}</td>
+
+    <!-- ✅ STATUS (THIS IS THE FIX) -->
+    <td class="{{ 'resolved' if grievance[6] == 'Resolved' else 'unresolved' }}">
+        {{ grievance[6] }}
+    </td>
+</tr>
+{% endfor %}
+                </tbody>
+
 
                    
             </table>
