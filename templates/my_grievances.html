@@ -110,8 +110,13 @@
 
             <!-- ✅ STATUS (ONLY from status column) -->
             <td class="{{ 'resolved' if grievance[6] == 'Resolved' else 'unresolved' }}">
-                {{ grievance[6] }}
+             {% if grievance[6] == 'Resolved' %}
+             Resolved
+             {% else %}
+             Pending
+             {% endif %}
             </td>
+
         </tr>
         {% endfor %}
         </tbody>
